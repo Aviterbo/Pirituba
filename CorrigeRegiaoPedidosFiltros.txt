@@ -1,0 +1,16 @@
+Update pf
+Set pf.Regiao1  = Case When pf.Regiao1 = 0 and e.Regiao =1 	Then e.Regiao Else 0 End,
+	pf.Regiao2  = Case When pf.Regiao2 = 0 and e.Regiao =2  Then e.Regiao Else 0 End,
+	pf.Regiao3  = Case When pf.Regiao3 = 0 and e.Regiao =3  Then e.Regiao Else 0 End
+--SELECT
+--COUNT(1)-- 1--54--1
+FROM dbo.Pedidos p
+JOIN dbo.Pedidos_Filtros pf ON pf.IDPedido = p.IDPedido
+JOIN dbo.estadosOI e ON e.UF = p.PEstado
+JOIN dbo.pedidospendentes pp ON pp.idPedido = p.IDPedido
+WHERE pf.Regiao1 = 0 and e.Regiao =1 
+				OR
+	  pf.Regiao2 = 0 and e.Regiao =2
+				OR
+	  pf.Regiao3 = 0 and e.Regiao =3
+	  

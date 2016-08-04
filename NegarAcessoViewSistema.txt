@@ -1,0 +1,318 @@
+http://www.sqlservercentral.com/Forums/Topic370165-359-1.aspx
+Verificar se ODBC pode burlar/ADHOC PODE BURLAR
+
+---------------------
+Michael I sympathise with you completely.  Do you ever get the feeling lately that Microsoft is losing the plot with some of the default settings and 'features' they build into their applications.  My colleague is currently conducting a feasability study on Sharepoint 2007 and some of the defaults he is finding are laughable when considered for a secure working environment.  Same with some of the office applications settings, and more -   have you ever tried to change the default font in Visual Studio Reporting Services ?  Don't bother, you can't!
+
+But wait, back to your original request.  This is the script and results I used a while back.  First run the script at the top and then execute all the revoke statements en masse from a new query window.  You may wish to edit the list first.  I still found though that you cannot revoke a couple of the sys views and I believe it is something to do with the fact that everyone by default (!) is dumped into the public role and some views cannot be revoked for that.  When I get the time I intend to do a bit more research on my development machine, but it is so-o-o frustrating ....
+
+-- Routine to revoke select permissions for the public role on 
+-- Information_Schema and sys schema views.  The statement immediately below generates 
+-- the list of revoke statements following.
+
+
+/*
+SELECT ' REVOKE SELECT ON '+ s.name + '.' + o.name + ' TO public' 
+FROM sys.all_views o, sys.schemas s
+WHERE o.schema_id = s.Schema_id
+AND o.SCHEMA_ID IN (3, 4) 
+ORDER BY s.name, o.name
+*/
+
+
+USE Master
+GO
+
+ REVOKE SELECT ON INFORMATION_SCHEMA.CHECK_CONSTRAINTS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.COLUMN_DOMAIN_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.COLUMN_PRIVILEGES TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.COLUMNS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.CONSTRAINT_TABLE_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.DOMAIN_CONSTRAINTS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.DOMAINS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.KEY_COLUMN_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.PARAMETERS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.ROUTINE_COLUMNS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.ROUTINES TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.SCHEMATA TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.TABLE_CONSTRAINTS TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.TABLE_PRIVILEGES TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.TABLES TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.VIEW_COLUMN_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.VIEW_TABLE_USAGE TO public
+ REVOKE SELECT ON INFORMATION_SCHEMA.VIEWS TO public
+ REVOKE SELECT ON sys.all_columns TO public
+ REVOKE SELECT ON sys.all_objects TO public
+ REVOKE SELECT ON sys.all_parameters TO public
+ REVOKE SELECT ON sys.all_sql_modules TO public
+ REVOKE SELECT ON sys.all_views TO public
+ REVOKE SELECT ON sys.allocation_units TO public
+ REVOKE SELECT ON sys.assemblies TO public
+ REVOKE SELECT ON sys.assembly_files TO public
+ REVOKE SELECT ON sys.assembly_modules TO public
+ REVOKE SELECT ON sys.assembly_references TO public
+ REVOKE SELECT ON sys.assembly_types TO public
+ REVOKE SELECT ON sys.asymmetric_keys TO public
+ REVOKE SELECT ON sys.backup_devices TO public
+ REVOKE SELECT ON sys.certificates TO public
+ REVOKE SELECT ON sys.check_constraints TO public
+ REVOKE SELECT ON sys.column_type_usages TO public
+ REVOKE SELECT ON sys.column_xml_schema_collection_usages TO public
+ REVOKE SELECT ON sys.columns TO public
+ REVOKE SELECT ON sys.computed_columns TO public
+ REVOKE SELECT ON sys.configurations TO public
+ REVOKE SELECT ON sys.conversation_endpoints TO public
+ REVOKE SELECT ON sys.conversation_groups TO public
+ REVOKE SELECT ON sys.credentials TO public
+ REVOKE SELECT ON sys.crypt_properties TO public
+ REVOKE SELECT ON sys.data_spaces TO public
+ REVOKE SELECT ON sys.database_files TO public
+ REVOKE SELECT ON sys.database_mirroring TO public
+ REVOKE SELECT ON sys.database_mirroring_endpoints TO public
+ REVOKE SELECT ON sys.database_mirroring_witnesses TO public
+ REVOKE SELECT ON sys.database_permissions TO public
+ REVOKE SELECT ON sys.database_principal_aliases TO public
+ REVOKE SELECT ON sys.database_principals TO public
+ REVOKE SELECT ON sys.database_recovery_status TO public
+ REVOKE SELECT ON sys.database_role_members TO public
+ REVOKE SELECT ON sys.databases TO public
+ REVOKE SELECT ON sys.default_constraints TO public
+ REVOKE SELECT ON sys.destination_data_spaces TO public
+ REVOKE SELECT ON sys.dm_broker_activated_tasks TO public
+ REVOKE SELECT ON sys.dm_broker_connections TO public
+ REVOKE SELECT ON sys.dm_broker_forwarded_messages TO public
+ REVOKE SELECT ON sys.dm_broker_queue_monitors TO public
+ REVOKE SELECT ON sys.dm_clr_appdomains TO public
+ REVOKE SELECT ON sys.dm_clr_loaded_assemblies TO public
+ REVOKE SELECT ON sys.dm_clr_properties TO public
+ REVOKE SELECT ON sys.dm_clr_tasks TO public
+ REVOKE SELECT ON sys.dm_db_file_space_usage TO public
+ REVOKE SELECT ON sys.dm_db_index_usage_stats TO public
+ REVOKE SELECT ON sys.dm_db_mirroring_connections TO public
+ REVOKE SELECT ON sys.dm_db_missing_index_details TO public
+ REVOKE SELECT ON sys.dm_db_missing_index_group_stats TO public
+ REVOKE SELECT ON sys.dm_db_missing_index_groups TO public
+ REVOKE SELECT ON sys.dm_db_partition_stats TO public
+ REVOKE SELECT ON sys.dm_db_session_space_usage TO public
+ REVOKE SELECT ON sys.dm_db_task_space_usage TO public
+ REVOKE SELECT ON sys.dm_exec_background_job_queue TO public
+ REVOKE SELECT ON sys.dm_exec_background_job_queue_stats TO public
+ REVOKE SELECT ON sys.dm_exec_cached_plans TO public
+ REVOKE SELECT ON sys.dm_exec_connections TO public
+ REVOKE SELECT ON sys.dm_exec_query_memory_grants TO public
+ REVOKE SELECT ON sys.dm_exec_query_optimizer_info TO public
+ REVOKE SELECT ON sys.dm_exec_query_resource_semaphores TO public
+ REVOKE SELECT ON sys.dm_exec_query_stats TO public
+ REVOKE SELECT ON sys.dm_exec_query_transformation_stats TO public
+ REVOKE SELECT ON sys.dm_exec_requests TO public
+ REVOKE SELECT ON sys.dm_exec_sessions TO public
+ REVOKE SELECT ON sys.dm_fts_active_catalogs TO public
+ REVOKE SELECT ON sys.dm_fts_index_population TO public
+ REVOKE SELECT ON sys.dm_fts_memory_buffers TO public
+ REVOKE SELECT ON sys.dm_fts_memory_pools TO public
+ REVOKE SELECT ON sys.dm_fts_population_ranges TO public
+ REVOKE SELECT ON sys.dm_io_backup_tapes TO public
+ REVOKE SELECT ON sys.dm_io_cluster_shared_drives TO public
+ REVOKE SELECT ON sys.dm_io_pending_io_requests TO public
+ REVOKE SELECT ON sys.dm_os_buffer_descriptors TO public
+ REVOKE SELECT ON sys.dm_os_child_instances TO public
+ REVOKE SELECT ON sys.dm_os_cluster_nodes TO public
+ REVOKE SELECT ON sys.dm_os_hosts TO public
+ REVOKE SELECT ON sys.dm_os_latch_stats TO public
+ REVOKE SELECT ON sys.dm_os_loaded_modules TO public
+ REVOKE SELECT ON sys.dm_os_memory_allocations TO public
+ REVOKE SELECT ON sys.dm_os_memory_cache_clock_hands TO public
+ REVOKE SELECT ON sys.dm_os_memory_cache_counters TO public
+ REVOKE SELECT ON sys.dm_os_memory_cache_entries TO public
+ REVOKE SELECT ON sys.dm_os_memory_cache_hash_tables TO public
+ REVOKE SELECT ON sys.dm_os_memory_clerks TO public
+ REVOKE SELECT ON sys.dm_os_memory_objects TO public
+ REVOKE SELECT ON sys.dm_os_memory_pools TO public
+ REVOKE SELECT ON sys.dm_os_performance_counters TO public
+ REVOKE SELECT ON sys.dm_os_ring_buffers TO public
+ REVOKE SELECT ON sys.dm_os_schedulers TO public
+ REVOKE SELECT ON sys.dm_os_stacks TO public
+ REVOKE SELECT ON sys.dm_os_sublatches TO public
+ REVOKE SELECT ON sys.dm_os_sys_info TO public
+ REVOKE SELECT ON sys.dm_os_tasks TO public
+ REVOKE SELECT ON sys.dm_os_threads TO public
+ REVOKE SELECT ON sys.dm_os_virtual_address_dump TO public
+ REVOKE SELECT ON sys.dm_os_wait_stats TO public
+ REVOKE SELECT ON sys.dm_os_waiting_tasks TO public
+ REVOKE SELECT ON sys.dm_os_worker_local_storage TO public
+ REVOKE SELECT ON sys.dm_os_workers TO public
+ REVOKE SELECT ON sys.dm_qn_subscriptions TO public
+ REVOKE SELECT ON sys.dm_repl_articles TO public
+ REVOKE SELECT ON sys.dm_repl_schemas TO public
+ REVOKE SELECT ON sys.dm_repl_tranhash TO public
+ REVOKE SELECT ON sys.dm_repl_traninfo TO public
+ REVOKE SELECT ON sys.dm_tran_active_snapshot_database_transactions TO public
+ REVOKE SELECT ON sys.dm_tran_active_transactions TO public
+ REVOKE SELECT ON sys.dm_tran_current_snapshot TO public
+ REVOKE SELECT ON sys.dm_tran_current_transaction TO public
+ REVOKE SELECT ON sys.dm_tran_database_transactions TO public
+ REVOKE SELECT ON sys.dm_tran_locks TO public
+ REVOKE SELECT ON sys.dm_tran_session_transactions TO public
+ REVOKE SELECT ON sys.dm_tran_top_version_generators TO public
+ REVOKE SELECT ON sys.dm_tran_transactions_snapshot TO public
+ REVOKE SELECT ON sys.dm_tran_version_store TO public
+ REVOKE SELECT ON sys.endpoint_webmethods TO public
+ REVOKE SELECT ON sys.endpoints TO public
+ REVOKE SELECT ON sys.event_notification_event_types TO public
+ REVOKE SELECT ON sys.event_notifications TO public
+ REVOKE SELECT ON sys.events TO public
+ REVOKE SELECT ON sys.extended_procedures TO public
+ REVOKE SELECT ON sys.extended_properties TO public
+ REVOKE SELECT ON sys.filegroups TO public
+ REVOKE SELECT ON sys.foreign_key_columns TO public
+ REVOKE SELECT ON sys.foreign_keys TO public
+ REVOKE SELECT ON sys.fulltext_catalogs TO public
+ REVOKE SELECT ON sys.fulltext_document_types TO public
+ REVOKE SELECT ON sys.fulltext_index_catalog_usages TO public
+ REVOKE SELECT ON sys.fulltext_index_columns TO public
+ REVOKE SELECT ON sys.fulltext_indexes TO public
+ REVOKE SELECT ON sys.fulltext_languages TO public
+ REVOKE SELECT ON sys.http_endpoints TO public
+ REVOKE SELECT ON sys.identity_columns TO public
+ REVOKE SELECT ON sys.index_columns TO public
+ REVOKE SELECT ON sys.indexes TO public
+ REVOKE SELECT ON sys.internal_tables TO public
+ REVOKE SELECT ON sys.key_constraints TO public
+ REVOKE SELECT ON sys.key_encryptions TO public
+ REVOKE SELECT ON sys.linked_logins TO public
+ REVOKE SELECT ON sys.login_token TO public
+ REVOKE SELECT ON sys.master_files TO public
+ REVOKE SELECT ON sys.master_key_passwords TO public
+ REVOKE SELECT ON sys.message_type_xml_schema_collection_usages TO public
+ REVOKE SELECT ON sys.messages TO public
+ REVOKE SELECT ON sys.module_assembly_usages TO public
+ REVOKE SELECT ON sys.numbered_procedure_parameters TO public
+ REVOKE SELECT ON sys.numbered_procedures TO public
+ REVOKE SELECT ON sys.objects TO public
+ REVOKE SELECT ON sys.openkeys TO public
+ REVOKE SELECT ON sys.parameter_type_usages TO public
+ REVOKE SELECT ON sys.parameter_xml_schema_collection_usages TO public
+ REVOKE SELECT ON sys.parameters TO public
+ REVOKE SELECT ON sys.partition_functions TO public
+ REVOKE SELECT ON sys.partition_parameters TO public
+ REVOKE SELECT ON sys.partition_range_values TO public
+ REVOKE SELECT ON sys.partition_schemes TO public
+ REVOKE SELECT ON sys.partitions TO public
+ REVOKE SELECT ON sys.plan_guides TO public
+ REVOKE SELECT ON sys.procedures TO public
+ REVOKE SELECT ON sys.remote_logins TO public
+ REVOKE SELECT ON sys.remote_service_bindings TO public
+ REVOKE SELECT ON sys.routes TO public
+ REVOKE SELECT ON sys.schemas TO public
+ REVOKE SELECT ON sys.securable_classes TO public
+ REVOKE SELECT ON sys.server_assembly_modules TO public
+ REVOKE SELECT ON sys.server_event_notifications TO public
+ REVOKE SELECT ON sys.server_events TO public
+ REVOKE SELECT ON sys.server_permissions TO public
+ REVOKE SELECT ON sys.server_principals TO public
+ REVOKE SELECT ON sys.server_role_members TO public
+ REVOKE SELECT ON sys.server_sql_modules TO public
+ REVOKE SELECT ON sys.server_trigger_events TO public
+ REVOKE SELECT ON sys.server_triggers TO public
+ REVOKE SELECT ON sys.servers TO public
+ REVOKE SELECT ON sys.service_broker_endpoints TO public
+ REVOKE SELECT ON sys.service_contract_message_usages TO public
+ REVOKE SELECT ON sys.service_contract_usages TO public
+ REVOKE SELECT ON sys.service_contracts TO public
+ REVOKE SELECT ON sys.service_message_types TO public
+ REVOKE SELECT ON sys.service_queue_usages TO public
+ REVOKE SELECT ON sys.service_queues TO public
+ REVOKE SELECT ON sys.services TO public
+ REVOKE SELECT ON sys.soap_endpoints TO public
+ REVOKE SELECT ON sys.sql_dependencies TO public
+ REVOKE SELECT ON sys.sql_logins TO public
+ REVOKE SELECT ON sys.sql_modules TO public
+ REVOKE SELECT ON sys.stats TO public
+ REVOKE SELECT ON sys.stats_columns TO public
+ REVOKE SELECT ON sys.symmetric_keys TO public
+ REVOKE SELECT ON sys.synonyms TO public
+ REVOKE SELECT ON sys.sysaltfiles TO public
+ REVOKE SELECT ON sys.syscacheobjects TO public
+ REVOKE SELECT ON sys.syscharsets TO public
+ REVOKE SELECT ON sys.syscolumns TO public
+ REVOKE SELECT ON sys.syscomments TO public
+ REVOKE SELECT ON sys.sysconfigures TO public
+ REVOKE SELECT ON sys.sysconstraints TO public
+ REVOKE SELECT ON sys.syscurconfigs TO public
+ REVOKE SELECT ON sys.syscursorcolumns TO public
+ REVOKE SELECT ON sys.syscursorrefs TO public
+ REVOKE SELECT ON sys.syscursors TO public
+ REVOKE SELECT ON sys.syscursortables TO public
+ REVOKE SELECT ON sys.sysdepends TO public
+ REVOKE SELECT ON sys.sysdevices TO public
+ REVOKE SELECT ON sys.sysfilegroups TO public
+ REVOKE SELECT ON sys.sysfiles TO public
+ REVOKE SELECT ON sys.sysforeignkeys TO public
+ REVOKE SELECT ON sys.sysfulltextcatalogs TO public
+ REVOKE SELECT ON sys.sysindexes TO public
+ REVOKE SELECT ON sys.sysindexkeys TO public
+ REVOKE SELECT ON sys.syslanguages TO public
+ REVOKE SELECT ON sys.syslockinfo TO public
+ REVOKE SELECT ON sys.syslogins TO public
+ REVOKE SELECT ON sys.sysmembers TO public
+ REVOKE SELECT ON sys.sysmessages TO public
+ REVOKE SELECT ON sys.sysobjects TO public
+ REVOKE SELECT ON sys.sysoledbusers TO public
+ REVOKE SELECT ON sys.sysopentapes TO public
+ REVOKE SELECT ON sys.sysperfinfo TO public
+ REVOKE SELECT ON sys.syspermissions TO public
+ REVOKE SELECT ON sys.sysprocesses TO public
+ REVOKE SELECT ON sys.sysprotects TO public
+ REVOKE SELECT ON sys.sysreferences TO public
+ REVOKE SELECT ON sys.sysremotelogins TO public
+ REVOKE SELECT ON sys.syssegments TO public
+ REVOKE SELECT ON sys.sysservers TO public
+ REVOKE SELECT ON sys.system_columns TO public
+ REVOKE SELECT ON sys.system_components_surface_area_configuration TO public
+ REVOKE SELECT ON sys.system_internals_allocation_units TO public
+ REVOKE SELECT ON sys.system_internals_partition_columns TO public
+ REVOKE SELECT ON sys.system_internals_partitions TO public
+ REVOKE SELECT ON sys.system_objects TO public
+ REVOKE SELECT ON sys.system_parameters TO public
+ REVOKE SELECT ON sys.system_sql_modules TO public
+ REVOKE SELECT ON sys.system_views TO public
+ REVOKE SELECT ON sys.systypes TO public
+ REVOKE SELECT ON sys.sysusers TO public
+ REVOKE SELECT ON sys.tables TO public
+ REVOKE SELECT ON sys.tcp_endpoints TO public
+ REVOKE SELECT ON sys.trace_categories TO public
+ REVOKE SELECT ON sys.trace_columns TO public
+ REVOKE SELECT ON sys.trace_event_bindings TO public
+ REVOKE SELECT ON sys.trace_events TO public
+ REVOKE SELECT ON sys.trace_subclass_values TO public
+ REVOKE SELECT ON sys.traces TO public
+ REVOKE SELECT ON sys.transmission_queue TO public
+ REVOKE SELECT ON sys.trigger_events TO public
+ REVOKE SELECT ON sys.triggers TO public
+ REVOKE SELECT ON sys.type_assembly_usages TO public
+ REVOKE SELECT ON sys.types TO public
+ REVOKE SELECT ON sys.user_token TO public
+ REVOKE SELECT ON sys.via_endpoints TO public
+ REVOKE SELECT ON sys.views TO public
+ REVOKE SELECT ON sys.xml_indexes TO public
+ REVOKE SELECT ON sys.xml_schema_attributes TO public
+ REVOKE SELECT ON sys.xml_schema_collections TO public
+ REVOKE SELECT ON sys.xml_schema_component_placements TO public
+ REVOKE SELECT ON sys.xml_schema_components TO public
+ REVOKE SELECT ON sys.xml_schema_elements TO public
+ REVOKE SELECT ON sys.xml_schema_facets TO public
+ REVOKE SELECT ON sys.xml_schema_model_groups TO public
+ REVOKE SELECT ON sys.xml_schema_namespaces TO public
+ REVOKE SELECT ON sys.xml_schema_types TO public
+ REVOKE SELECT ON sys.xml_schema_wildcard_namespaces TO public
+ REVOKE SELECT ON sys.xml_schema_wildcards TO public
+
+
+
+
+Best Regards
+Terry
+
+------------------------------

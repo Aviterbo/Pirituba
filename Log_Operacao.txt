@@ -1,0 +1,40 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy para Windows                              
+-------------------------------------------------------------------------------
+
+  Iniciado: Wed Sep 17 17:52:49 2014
+
+   Origem : Z:\sql_jobs\
+     Dest : C:\sql_jobs\
+
+    Arquivos: *.*
+	    
+  Op‡äes: *.* /S /E /COPY:DAT /PURGE /MIR /ZB /MT:5 /R:4 /W:10 
+
+------------------------------------------------------------------------------
+
+ERRO: vocˆ nÆo tem os direitos de usu rio Arquivos de Backup e Restaura‡Æo.
+*****  Vocˆ precisa disso para realizar as c¢pias de Backup (/B ou /ZB).
+
+ERRO: Robocopy sem mem¢ria, saindo.
+ERRO: Parƒmetro Inv lido #%d: "%s"
+
+ERRO: Arquivo de Trabalho Inv lido, Linha #%d:"%s"
+
+
+  Iniciado: %hs
+
+   Origem %c 
+
+     Dest %c 
+       Uso Simples :: ROBOCOPY origem destino /MIR
+
+             origem :: Diret¢rio de Origem (unidade:\caminho ou \\servidor\compartilhamento\caminho).
+        destino :: Diret¢rio de Destino  (unidade:\caminho ou \\servidor\compartilhamento\caminho).
+               /MIR :: espelhar uma  rvore de diret¢rio completa.
+
+    Para obter mais informa‡äes sobre uso, execute ROBOCOPY /?
+
+                                                          
+****  /MIR pode EXCLUIR arquivos e tamb‚m copi -los!

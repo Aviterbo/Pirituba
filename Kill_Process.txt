@@ -1,0 +1,9 @@
+elect * from sys.sysprocesses s
+OUTER APPLY sys.dm_exec_sql_text(s.sql_handle) D       
+where s.status = 'sleeping'
+(11:51:52) declare @table as table (spid varchar(max), ecid varchar(max), status varchar(max), loginame varchar(max), 
+hostname varchar(max), blk varchar(max), dbname varchar(max), cmd varchar(max), request_id varchar(max))
+insert @table 
+exec sp_who
+
+select 'kill '+spid,* from @table where cmd ='AWAITING COMMAND' and hostname not like '%srv%'

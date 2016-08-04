@@ -1,0 +1,9 @@
+How to install/enable .Net 3.5 SP1 
+on Windows Server 2008 R2 for SQL Server 2008 and SQL Server 2008 R2
+
+Click the Start button in the lower left hand corner of the display.
+Highlight All Programs and select Accessories
+Expand Windows PowerShell and right click Windows PowerShell and select Run as administrator. Click Yes on the User Account Control box.
+At the PowerShell command prompt, type the following commands, and then press ENTER after each command:
+Import-Module ServerManager
+Add-WindowsFeature as-net-framework

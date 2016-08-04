@@ -1,0 +1,26 @@
+Após verificar problemas ao consultar um campo do tipo string em uma base de dados, a minha consulta quando utilizava ’ =’ na clausula “Where” não retornava nenhum registro, sendo que eu sabia que existia algo, consultando sem filtro. Utilizando ‘LIKE’ na clausula ‘WHERE’ verifiquei que havia retorno de registro, então conclui que a string continha algo depois do que era visualizado. 
+Utilizando a função len(campo), verifiquei que realmente existia algo que o banco reconheceria como caractere, porém não era possível visualizá-lo, por exemplo, um campo que visivelmente teria 15 caracteres, na contagem me retornava 18. 
+Pesquisando na internet, descobri no site: http://msdn.microsoft.com/pt-br/library/ms191485.aspx que existe o que eles chamam de ‘Caractere de controle nulo (\0)’, ou seja, tudo após esses dois caracteres o banco mantém armazenado, porém não disponibiliza durante a visualização. Uma forma de verificar quando tem poucos registros é abrir a tabela via ‘Open Table ‘ do Sql Server Management Studio(2005) e verificar se algum registro na coluna do tipo string apresenta um quadradinho. Ao clicar no registro, esse quadradinho desaparece e então mostra apenas os dados antes desse caractere “estranho”. 
+Para verificar que caracteres eram esses, utilizei as funções ‘Ascii’, ‘substring’, ‘Char’. Com essas funções, eu posso passar a posição do caractere, e verificar qual é a relação na tabela ASCII, e seu código. 
+
+Select campo, ascii(substring(campo, 16, 1)), char(ascii(substring(campo, 16,1))) 
+From tabela 
+
+Dessa forma consegui descobri que a posição 16, teria o char(0), e na posição 17(32). Na posição 18 ainda havia um dado que me interessava. 
+Para poder retirar esses caracteres da minha consulta foi utilizado a função ‘replace’, concatenando os dois caracteres e substituindo por um espaço em branco. 
+
+Select campo, replace(campo, char(0) + char(32), ’ ’) 
+From tabela 
+
+Dessa forma posso verificar se houve mesmo a alteração dos dados. 
+É importante ressaltar, que para esse ‘replace ‘ funcionar, eu tive que utilizar outro Collation, diferente do original do banco. 
+
+Select campo, replace(campo, char(0)+char(32) collate SQL_Latin1_General_CP1_CI_AS, ’ ’) 
+From tabela 
+
+Depois resolvi atualizar todos os registros, retirando esses caracteres. 
+
+Update tabela 
+set campo= replace(campo, char(0)+char(32) collate SQL_Latin1_General_CP1_CI_AS, ’ ’) 
+
+Pronto… Problema resolvido.

@@ -1,0 +1,54 @@
+A planilha funciona da seguinte forma, são digitados os campos:
+
+CEP Origem: CEP daonde será despachado o pacote;
+CEP Destino: CEP do destino para o qual será enviada a encomenda;
+Serviço: Tipo do serviço disponibilizado pelos correios, conforme lista passada pelo próprio correio;
+Peso: Peso do pacote;
+Comprimento: Comprimento do pacote;
+Largura: Largura do pacote;
+Altura: Altura do pacote.
+Abaixo o código VBA que monta a planilha automaticamente:
+
+Sub lsConsultaProdutoCorreios()
+ 
+    Application.ScreenUpdating = False
+ 
+    Dim lUltimaLinhaAtiva As Long
+ 
+    Worksheets("Rastreamentos").Select
+ 
+    lUltimaLinhaAtiva = Worksheets("Lista de encomendas").Cells(Worksheets("Lista de encomendas").Rows.Count, 1).End(xlUp).Row + 1
+ 
+    For i = 6 To lUltimaLinhaAtiva
+ 
+        DoEvents
+ 
+        With ActiveWorkbook.Connections("Conexão23")
+            .Name = "Conexão23"
+            .Description = ""
+        End With
+        Range("A1:C200").Select
+        With Selection.QueryTable
+            .Connection = _
+            "URL;http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa=&amp;sDsSenha=&amp;nCdServico=" &amp; Worksheets("Lista de Encomendas").Range("D" &amp; i).Value &amp; "&amp;sCepOrigem=" &amp; Worksheets("Lista de Encomendas").Range("A" &amp; i).Value &amp; "&amp;sCepDestino=" &amp; Worksheets("Lista de Encomendas").Range("B" &amp; i).Value &amp; "&amp;nVlPeso= " &amp; Worksheets("Lista de Encomendas").Range("E" &amp; i).Value &amp; "&amp;nCdFormato=1&amp;nVlComprimento=" &amp; Worksheets("Lista de Encomendas").Range("F" &amp; i).Value &amp; "&amp;nVlAltura=" &amp; Worksheets("Lista de Encomendas").Range("H" &amp; i).Value &amp; "&amp;nVlLargura=" &amp; Worksheets("Lista de Encomendas").Range("G" &amp; i).Value &amp; "&amp;nVlDiametro=0&amp;sCdMaoPropria=N&amp;nVlValorDeclarado=0&amp;sCdAvisoRecebimento=N&amp;StrRetorno=xml"
+            .WebSelectionType = xlAllTables
+            .WebFormatting = xlWebFormattingNone
+            .WebPreFormattedTextToColumns = True
+            .WebConsecutiveDelimitersAsOne = True
+            .WebSingleBlockTextImport = False
+            .WebDisableDateRecognition = False
+            .WebDisableRedirections = False
+            .Refresh BackgroundQuery:=False
+        End With
+ 
+        ActiveWorkbook.Connections("Conexão23").Refresh
+ 
+        Worksheets("Lista de Encomendas").Range("I" &amp; i).Value = Worksheets("Rastreamentos").Range("K3").Value
+        Worksheets("Lista de Encomendas").Range("J" &amp; i).Value = Worksheets("Rastreamentos").Range("N3").Value
+    Next i
+ 
+    Worksheets("Lista de encomendas").Select
+ 
+    Application.ScreenUpdating = True
+ 
+End Sub

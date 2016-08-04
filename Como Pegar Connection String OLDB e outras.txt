@@ -1,0 +1,6 @@
+Crie um arquivo txt e renomeie para nomeQualquer.udl 
+Se não abrir automaticamente click com o Botão direito e mande abrir com OLE DB Core Service 
+Preencha com os dados de servidor e Banco e demais opções como tipo de logon etc.
+Click em OK
+Abra o arquivo com o Editor de texto e lá esta a connection String .
+Na Aba dos Provedores {Provider} existem outras opções de conexão.

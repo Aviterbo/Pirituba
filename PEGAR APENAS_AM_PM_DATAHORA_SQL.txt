@@ -1,0 +1,10 @@
+AM/PM Time format in SQL Server
+
+Provided by Jim Ferguson, Project Manager
+
+There are times that you want to display non-Military or AM/PM time format. The standard Convert formats do not have an option to return the time in this format. The SQL below will return only the time portion of the current date/time in the AM/PM format. You can replace the GetDate function with any datetime field to return the time portion of that field
+
+SELECT substring(convert(varchar(20), GetDate(), 9), 13, 5) 
++ ' ' + substring(convert(varchar(30), GetDate(), 9), 25, 2)
+
+http://www.fmsinc.com/free/NewTips/SQL/AM_PM_time_format_in_SQL.asp

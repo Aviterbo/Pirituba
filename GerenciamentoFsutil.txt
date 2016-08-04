@@ -1,0 +1,2 @@
+Executar no prompt MSDOS
+Fsutil (Gerenciamento de volume)
